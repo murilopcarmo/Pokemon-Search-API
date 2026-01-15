@@ -1,13 +1,18 @@
 import React from "react";
+import { PokemonType } from "./components/pokemonType";
+import { PokemonSprite } from "./components/pokemonSprite";
+import { PokemonStats } from "./components/pokemonStats";
 
-class SearchPokemon extends React.Component {
+class PokemonSearch extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       input: "",
-      output: "",
+      name: "",
       image: "",
       type: "",
+      stats: [],
+      cry: "",
       error: "",
     };
   }
@@ -26,7 +31,7 @@ class SearchPokemon extends React.Component {
       }
       const data = await response.json();
       this.setState({
-        output: data.name.toUpperCase(),
+        name: data.name.toUpperCase(),
         image: data.sprites.front_default,
         type: data.types,
         stats: data.stats,
@@ -36,10 +41,10 @@ class SearchPokemon extends React.Component {
       // eslint-disable-next-line no-unused-vars
     } catch (e) {
       this.setState({
-        output: "",
+        name: "",
         image: "",
         type: "",
-        stats: "",
+        stats: [],
         cry: "",
         error: "Não encontrado.",
       });
@@ -75,20 +80,20 @@ class SearchPokemon extends React.Component {
           {/*Container de dados*/}
           <div className="pokemon-info">
             {/*nome*/}
-            <span>{this.state.output}</span>
+            <span>{this.state.name}</span>
             <br />
             {/*Sprite*/}
-            <span>
-              {this.state.image && <img src={this.state.image} alt="pokemon" />}
-            </span>
+            {this.state.image && (
+              <PokemonSprite
+                sprite={this.state.image}
+                alt={this.state.name}
+              />
+            )}
             <br />
             {/*Tipos*/}
             {this.state.type &&
-              this.state.type.map((item) => (
-                <span className="type" id={item.type.name.toUpperCase()}>
-                  {item.type.name.toUpperCase()}
-                  <br />
-                </span>
+              this.state.type.map((item, index) => (
+                <PokemonType key={index} types={item.type.name} />
               ))}
             {/* Som do Pokemon */}
             {this.state.cry && (
@@ -102,21 +107,7 @@ class SearchPokemon extends React.Component {
           </div>
           {/*Tabela de stats*/}
           {this.state.stats && this.state.stats.length > 1 && (
-            <table id="statsTable">
-              <thead>
-                <tr>
-                  <th>Stat</th>
-                </tr>
-              </thead>
-              <tbody>
-                {this.state.stats.map((item) => (
-                  <tr>
-                    <td>{item.stat.name.toUpperCase()}</td>
-                    <td>{item.base_stat}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+            <PokemonStats stats={this.state.stats} />
           )}
           <span>{this.state.error}</span>
         </div>
@@ -124,4 +115,4 @@ class SearchPokemon extends React.Component {
     );
   }
 }
-export default SearchPokemon;
+export default PokemonSearch;

@@ -18,16 +18,6 @@ body {
   flex: 1;
   text-align: left;
 }
-#statsTable {
-  flex: 1;
-  width: 100%;
-  border-collapse: separate;
-  border-spacing: 3px 3px;
-}
-td {
-  background: white;
-  border: 1px solid black;
-}
 .type {
   color: white;
   font-size: 2rem;
@@ -60,57 +50,4 @@ td {
   cursor: pointer;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
-#NORMAL {
-  background-color: #a8a77a;
-}
-#FIRE {
-  background-color: #ee8130;
-}
-#WATER {
-  background-color: #6390f0;
-}
-#GRASS {
-  background-color: #7ac74c;
-}
-#ELECTRIC {
-  background-color: #f7d02c;
-}
-#ICE {
-  background-color: #96d9d6;
-}
-#FIGHTING {
-  background-color: #c22e28;
-}
-#POISON {
-  background-color: #a33ea1;
-}
-#GROUND {
-  background-color: #e2bf65;
-}
-#FLYING {
-  background-color: #a98ff3;
-}
-#PSYCHIC {
-  background-color: #f95587;
-}
-#BUG {
-  background-color: #a6b91a;
-}
-#ROCK {
-  background-color: #b6a136;
-}
-#GHOST {
-  background-color: #735797;
-}
-#DRAGON {
-  background-color: #6f35fc;
-}
-#DARK {
-  background-color: #705746;
-}
-#STEEL {
-  background-color: #b7b7ce;
-}
-#FAIRY {
-  background-color: #d685ad;
-}
+
