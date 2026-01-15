@@ -2,6 +2,7 @@ import React from "react";
 import { PokemonType } from "./components/pokemonType";
 import { PokemonSprite } from "./components/pokemonSprite";
 import { PokemonStats } from "./components/pokemonStats";
+import { PokemonCry } from "./components/pokemonCry";
 
 class PokemonSearch extends React.Component {
   constructor(props) {
@@ -96,14 +97,11 @@ class PokemonSearch extends React.Component {
                 <PokemonType key={index} types={item.type.name} />
               ))}
             {/* Som do Pokemon */}
+            <br />
             {this.state.cry && (
-              <div>
-                <button id="audio" onClick={this.playcry} src={this.state.cry}>
-                  ▶
-                </button>
-                Cry
-              </div>
+              <PokemonCry src={this.state.cry} />
             )}
+            <span>Cry</span>
           </div>
           {/*Tabela de stats*/}
           {this.state.stats && this.state.stats.length > 1 && (
