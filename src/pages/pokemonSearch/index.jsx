@@ -3,7 +3,8 @@ import { PokemonType } from "./components/pokemonType";
 import { PokemonSprite } from "./components/pokemonSprite";
 import { PokemonStats } from "./components/pokemonStats";
 import { PokemonCry } from "./components/pokemonCry";
-import { Container } from "./styles";
+import { Container, SearchButton } from "./styles";
+import { Typography } from "@mui/material";
 
 export const PokeSearch = () => {
   const [pokemon, setPokemon] = useState({
@@ -66,9 +67,10 @@ export const PokeSearch = () => {
         required
       ></input>
       <div id="bottom-box">
-        <button id="submit" onClick={pokemonSearch}>
+        <SearchButton variant="contained" color="secondary" onClick={pokemonSearch}><Typography variant="buttons">
           Buscar
-        </button>
+        </Typography>
+        </SearchButton>
       </div>
       <br />
       <div id="output">
