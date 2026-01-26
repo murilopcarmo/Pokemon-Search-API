@@ -14,6 +14,7 @@ import Icon from '@mui/material/Icon';
 import { IconButton } from '@mui/material';
 import { useNavigate } from '@tanstack/react-router';
 
+//Drawer Icon
 function PokeMenuIcon() {
   return (
     <Icon sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -30,7 +31,7 @@ function PokeMenuIcon() {
 
 export default function TemporaryDrawer() {
   const [open, setOpen] = React.useState(false);
-  const navigate = useNavigate();
+  const navigate = useNavigate(); //hook from tanstack router
   const toggleDrawer = (newOpen) => () => {
     setOpen(newOpen);
   };
