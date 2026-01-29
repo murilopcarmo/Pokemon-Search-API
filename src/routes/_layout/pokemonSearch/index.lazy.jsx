@@ -1,10 +1,10 @@
-import { createLazyFileRoute } from '@tanstack/react-router'
-import { PokeSearch } from '../../../pages/pokemonSearch'
+import { createLazyFileRoute } from "@tanstack/react-router";
+import { PokemonSearch } from "../../../pages/pokemonSearch/index.jsx";
 
-export const Route = createLazyFileRoute('/_layout/pokemonSearch/')({
+export const Route = createLazyFileRoute("/_layout/pokemonSearch/")({
   component: RouteComponent,
-})
+});
 
 function RouteComponent() {
-  return <PokeSearch />
+  return <PokemonSearch />;
 }
