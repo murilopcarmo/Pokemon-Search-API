@@ -41,6 +41,7 @@ export const QuickSearch = () => {
           variant="contained"
           color="secondary"
           onClick={inputSearch}
+          disabled={loading}
         >
           <Typography variant="buttons">
             {loading ? "Buscando..." : "Buscar"}
@@ -50,8 +51,12 @@ export const QuickSearch = () => {
       <br />
       <div id="output">
         {/*Container de dados*/}
-        {error && <span>{error}</span>}
-        {pokemon && (
+        {error && (
+          <Typography variant="body2" color="error">
+            {error}
+          </Typography>
+        )}
+        {pokemon && !loading && (
           <div className="pokemon-info">
             {/*nome*/}
             <span>{pokemon.name}</span>
