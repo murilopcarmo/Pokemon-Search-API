@@ -1,6 +1,7 @@
 import { useState, useMemo } from "react";
 import { useDebounce } from "./hooks";
 import { Box, CircularProgress, Container, Grid, Button } from "@mui/material";
+import Skeleton from "@mui/material/Skeleton";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import { PokemonCard } from "../pokemonCard";
@@ -103,9 +104,7 @@ export const PokemonGrid = () => {
   // Render loading state or Pokémon grid
   if (isLoading)
     return (
-      <Box sx={{ display: "flex", justifyContent: "center", p: 5 }}>
-        <CircularProgress />
-      </Box>
+      <Skeleton variant="rectangular" width="100%" height={200} sx={{ m: 2 }} />
     );
 
     if (isError){
@@ -131,10 +130,11 @@ export const PokemonGrid = () => {
       <div id="bottom-box"></div>
       <Grid container spacing={2}>
         {isSearching ? (
-          <Box sx={{ display: "flex", justifyContent: "center", p: 5 }}>
-            <CircularProgress />
-          </Box>
-        ) : (
+          Array.from({ length: 12 }).map((_, index) => (
+          <Grid size={{ xs: 12, md: 2 }} key={index}>
+          <Skeleton variant="rectangular" width="100%" height={200} sx={{ m: 2 }} />
+        </Grid>
+        ))) : (
           renderContent()
         )}
       </Grid>

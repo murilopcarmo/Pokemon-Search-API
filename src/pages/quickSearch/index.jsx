@@ -5,7 +5,7 @@ import { PokemonSprite } from "./components/pokemonSprite";
 import { PokemonStats } from "./components/pokemonStats";
 import { PokemonCry } from "./components/pokemonCry";
 import { Container, SearchButton } from "./styles";
-import { Typography } from "@mui/material";
+import { Skeleton, Typography } from "@mui/material";
 import TextField from "@mui/material/TextField";
 
 export const QuickSearch = () => {
@@ -56,29 +56,34 @@ export const QuickSearch = () => {
             {error}
           </Typography>
         )}
-        {pokemon && !loading && (
+        {pokemon && (
           <div className="pokemon-info">
             {/*nome*/}
-            <span>{pokemon.name}</span>
+            {loading ? (<Skeleton variant="text" width={100} height={30} />) :
+            <Typography variant="h5">{pokemon.name}</Typography>}
             <br />
             {/*Sprite*/}
-            {pokemon.image && (
+            {loading ? (<Skeleton variant="rectangular" width={96} height={96} />) :
+            pokemon.image && (
               <PokemonSprite sprite={pokemon.image} alt={pokemon.name} />
             )}
             <br />
             {/*Tipos*/}
             <Container>
-              {pokemon.type &&
+              {loading ? (<Skeleton variant="rectangular" width={150} height={30} />) :
+              pokemon.type &&
                 pokemon.type.map((item, index) => (
                   <PokemonType key={index} types={item.type.name} />
                 ))}
             </Container>
             {/* Som do Pokemon */}
             <br />
-            {pokemon.cry && <PokemonCry src={pokemon.cry} />}
+            {loading ? (<Skeleton variant="rectangular" width={200} height={30} />) :
+            pokemon.cry && <PokemonCry src={pokemon.cry} />}
 
             {/*Tabela de stats*/}
-            {pokemon.stats && pokemon.stats.length > 1 && (
+            {loading ? (<Skeleton variant="rectangular" width={300} height={150} />) :
+            pokemon.stats && pokemon.stats.length > 1 && (
               <PokemonStats stats={pokemon.stats} />
             )}
           </div>
