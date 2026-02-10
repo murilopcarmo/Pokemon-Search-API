@@ -1,44 +1,46 @@
-import { useEffect, useState, useMemo } from "react";
+import { useState, useMemo } from "react";
 import { useDebounce } from "./hooks";
 import { Box, CircularProgress, Container, Grid, Button } from "@mui/material";
+import Skeleton from "@mui/material/Skeleton";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import { PokemonCard } from "../pokemonCard";
+import { useQuery } from "@tanstack/react-query";
+
+const fetchPokemonList = async () => {
+  const response = await fetch("https://pokeapi.co/api/v2/pokemon?limit=1025");
+  if (!response.ok) {
+    throw new Error("Falha ao buscar a lista de Pokémon");
+  }
+
+  const data = await response.json();
+  return data.results.map((pokemon) => {
+    const id = pokemon.url.split("/").filter(Boolean).pop();
+    return {
+      id: id,
+      name: pokemon.name,
+    };
+  });
+};
 
 export const PokemonGrid = () => {
   const [input, setInput] = useState(""); // State to hold the search input
-  const [pokemonList, setPokemonList] = useState([]); // State to hold the list of Pokémon
-  const [loading, setLoading] = useState(true); // State to manage loading status
   const [limit, setLimit] = useState(30); // State to manage the limit of displayed Pokémon
-
   const debouncedSearch = useDebounce(input, 1000); // Debounce delay of 1s
+
+  const {
+    data: pokemonList = [],
+    isLoading,
+    error,
+    isError,
+  } = useQuery({
+    queryKey: ["pokemonList"],
+    queryFn: fetchPokemonList,
+    staleTime: 1000 * 60 * 60, // Cache for 1 hour
+  });
 
   const isSearching =
     input.length > 0 && input !== debouncedSearch && input !== "todos"; // Determine if a search is in progress
-
-  useEffect(() => {
-    // Fetch Pokémon data from the API
-    async function fetchPokemonList() {
-      try {
-        const response = await fetch(
-          "https://pokeapi.co/api/v2/pokemon?limit=1025",
-        );
-        const data = await response.json();
-        const dataFormatted = data.results.map((pokemon) => {
-          const id = pokemon.url.split("/").filter(Boolean).pop();
-          return {
-            id: id,
-            name: pokemon.name,
-          };
-        });
-        setPokemonList(dataFormatted);
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching Pokémon list:", error);
-      }
-    }
-    fetchPokemonList();
-  }, []);
 
   const filteredPokemonList = useMemo(() => {
     // Memoized filtered list based on debounced search
@@ -77,11 +79,15 @@ export const PokemonGrid = () => {
     } else {
       return null; // No input, render nothing
     }
-    const cardsToShow = listToRender.slice(0, limit).map((pokemon) => ( //
-      <Grid size={{ xs: 12, md: 2 }} key={pokemon.id}>
-        <PokemonCard name={pokemon.name} id={pokemon.id} />
-      </Grid>
-    ));
+    const cardsToShow = listToRender.slice(0, limit).map(
+      (
+        pokemon, //
+      ) => (
+        <Grid size={{ xs: 12, md: 2 }} key={pokemon.id}>
+          <PokemonCard name={pokemon.name} id={pokemon.id} />
+        </Grid>
+      ),
+    );
     return (
       <>
         {cardsToShow}
@@ -96,12 +102,18 @@ export const PokemonGrid = () => {
     );
   };
   // Render loading state or Pokémon grid
-  if (loading)
+  if (isLoading)
     return (
-      <Box sx={{ display: "flex", justifyContent: "center", p: 5 }}>
-        <CircularProgress />
-      </Box>
+      <Skeleton variant="rectangular" width="100%" height={200} sx={{ m: 2 }} />
     );
+
+    if (isError){
+      return (
+        <Typography variant="h6" sx={{ m: 2 }}>
+          Erro ao carregar a lista de Pokémon: {error.message}
+        </Typography>
+      );
+    }
   // Render the grid of Pokémon cards
   return (
     <Container>
@@ -118,10 +130,11 @@ export const PokemonGrid = () => {
       <div id="bottom-box"></div>
       <Grid container spacing={2}>
         {isSearching ? (
-          <Box sx={{ display: "flex", justifyContent: "center", p: 5 }}>
-            <CircularProgress />
-          </Box>
-        ) : (
+          Array.from({ length: 12 }).map((_, index) => (
+          <Grid size={{ xs: 12, md: 2 }} key={index}>
+          <Skeleton variant="rectangular" width="100%" height={200} sx={{ m: 2 }} />
+        </Grid>
+        ))) : (
           renderContent()
         )}
       </Grid>

@@ -10,6 +10,8 @@ export const Container = styled.div`
 `;
 
 export const SearchButton = styled(Button)`
-  width: 60px;
-  height: 20px;
+  min-width: 80px;
+  width: auto;
+  min-height: 32px;
+  padding: 0 10px;
 `;
