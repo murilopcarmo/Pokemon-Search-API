@@ -15,7 +15,7 @@ export const Home = () => {
         </Box>
         <Box>
           <Typography variant="body1" component="p" p={4}>
-            Pokepedia é uma enciclopédia online dedicada a fornecer informações
+            Poképedia é uma enciclopédia online dedicada a fornecer informações
             detalhadas sobre o universo dos Pokémon. Aqui, você pode encontrar
             dados sobre espécies, habilidades, evoluções, tipos e muito mais.
             Seja você um treinador iniciante ou um fã de longa data.
