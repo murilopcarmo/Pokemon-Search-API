@@ -6,6 +6,13 @@ import { PokemonCardContainer, PokemonSprite } from "./styles";
 
 
 export const PokemonCard = ({ name, id }) => {
+  const formatName = (name) => {
+    if (!name) return "";
+
+    return name
+      .replace(/-/g, " ") // Substitui todos os hífens por espaço
+      .replace(/\b\w/g, (char) => char.toUpperCase()); // Primeira letra de cada palavra em maiúscula
+  };
   const fontSize = name.length > 10 ? "0.9rem" : "1.2rem"; // Ajusta o tamanho da fonte com base no comprimento do nome do Pokémon para garantir que ele se encaixe bem no card
   const navigate = useNavigate();
   const handleCardClick = () => {
@@ -14,7 +21,6 @@ export const PokemonCard = ({ name, id }) => {
         params: { name }, // Passa o nome do Pokémon como parâmetro para a rota de detalhes
       });
     }
-  const nameCapitalized = name.charAt(0).toUpperCase() + name.slice(1); // Deixa a primeira letra do nome do Pokémon em maiúscula para uma melhor apresentação no card
   return (
     <PokemonCardContainer>
       <CardActionArea onClick={() => handleCardClick()}>
@@ -41,7 +47,7 @@ export const PokemonCard = ({ name, id }) => {
               lineHeight: "1.2rem",
             }}
           >
-            {nameCapitalized}
+            {formatName(name)}
           </Typography>
         </CardContent>
       </CardActionArea>

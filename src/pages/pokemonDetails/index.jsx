@@ -1,16 +1,16 @@
 import { useParams } from "@tanstack/react-router";
 import { PokemonType } from "./components/pokemonType";
-import { PokemonSprite } from "./components/pokemonSprite";
+import { PokemonNextBar } from "./components/pokemonNextBar";
+import { PokemonImg } from "./components/pokemonImg";
 import { PokemonStats } from "./components/pokemonStats";
 import { PokemonCry } from "./components/pokemonCry";
-import { Container } from "./styles";
-import { Typography } from "@mui/material";
+import { TypeContainer } from "./styles";
+import { Typography, Container, Paper, Box } from "@mui/material";
 import { findPokemonFullData } from "../../services/pokemonServices";
 import { useQuery } from "@tanstack/react-query";
 
-
 export const PokemonDetails = () => {
-  const { name } = useParams({from: '/_layout/pokemonDetails/$name'}); // Obtém o nome do Pokémon a partir dos parâmetros da rota
+  const { name } = useParams({ from: "/_layout/pokemonDetails/$name" }); // Obtém o nome do Pokémon a partir dos parâmetros da rota
   const {
     data: pokemon,
     isLoading,
@@ -20,37 +20,45 @@ export const PokemonDetails = () => {
     queryKey: ["pokemonDetails", name],
     queryFn: () => findPokemonFullData(name), // Busca os dados completos do Pokémon usando o nome como parâmetro
   });
-if (isLoading) return <Typography>Buscando dados de {name}...</Typography>;
-if (!pokemon || !pokemon.types || !pokemon.stats) {
-    return <Typography>Buscando dados de {name}...</Typography>; 
+  if (isLoading) return <Typography>Buscando dados de {name}...</Typography>;
+  if (!pokemon || !pokemon.types || !pokemon.stats) {
+    return <Typography>Buscando dados de {name}...</Typography>;
   }
 
+  const formatName = (name) => {
+    if (!name) return "";
 
-  const nameCapitalized = pokemon?.name ? pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1) : name;
+    return name
+      .replace(/-/g, " ") // Substitui todos os hífens por espaço
+      .replace(/\b\w/g, (char) => char.toUpperCase()); // Primeira letra de cada palavra em maiúscula
+  };
+
   return (
-      <div id="pokemon-details">
+    <Container id="pokemon-details-container">
+      <Paper id="pokemon-details">
         {/*Container de dados*/}
-          <div className="pokemon-info">
-            {/*nome*/}
-            <Typography variant="h5">{nameCapitalized}</Typography>
-            <br />
-            {/*Sprite*/}
-            <PokemonSprite id={pokemon.id} alt={nameCapitalized} />
-            <br />
-            {/*Tipos*/}
-            <Container>
-                {pokemon.types.map((item, index) => (
-                  <PokemonType key={index} types={item.type.name} />
-                ))}
-            </Container>
-            {/* Som do Pokemon */}
-            <br />
-            <PokemonCry src={pokemon.cries.latest} />
+        <Box className="pokemon-info">
+          <PokemonNextBar id={pokemon.id} />
+          {/*nome*/}
+          <Typography variant="h5">{formatName(pokemon.name)}</Typography>
+          <br />
+          {/*Sprite*/}
+          <PokemonImg id={pokemon.id} alt={formatName(pokemon.name)} />
+          <br />
+          {/*Tipos*/}
+          <TypeContainer>
+            {pokemon.types.map((item, index) => (
+              <PokemonType key={index} types={item.type.name} />
+            ))}
+          </TypeContainer>
+          {/* Som do Pokemon */}
+          <br />
+          <PokemonCry src={pokemon.cries.latest} />
 
-            {/*Tabela de stats*/}
-            <PokemonStats stats={pokemon.stats} />
-          </div>
-
-      </div>
+          {/*Tabela de stats*/}
+          <PokemonStats stats={pokemon.stats} />
+        </Box>
+      </Paper>
+    </Container>
   );
 };
