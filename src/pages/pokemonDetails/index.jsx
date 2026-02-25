@@ -19,10 +19,38 @@ export const PokemonDetails = () => {
   } = useQuery({
     queryKey: ["pokemonDetails", name],
     queryFn: () => findPokemonFullData(name), // Busca os dados completos do Pokémon usando o nome como parâmetro
+    retry: false, // Desativa tentativas automáticas de refetch em caso de erro
+    refetchOnWindowFocus: false, // Desativa refetch ao focar a janela
   });
-  if (isLoading) return <Typography>Buscando dados de {name}...</Typography>;
-  if (!pokemon || !pokemon.types || !pokemon.stats) {
-    return <Typography>Buscando dados de {name}...</Typography>;
+  if (isLoading)
+    return (
+      <Container
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+        }}
+      >
+        <Typography>Buscando dados de "{name}"...</Typography>
+      </Container>
+    );
+  if (isError) {
+    return (
+      <Container
+        id="error-container"
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+        }}
+      >
+        <Typography>
+          {error?.message || "Erro ao buscar dados do Pokémon"}
+        </Typography>
+      </Container>
+    );
   }
 
   const formatName = (name) => {

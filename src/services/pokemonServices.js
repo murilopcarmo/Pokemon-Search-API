@@ -15,7 +15,7 @@ export const findPokemonFullData = async (name) => {
   // Monta a query GraphQL para buscar Pokémon cujo nome corresponda ao termo de pesquisa, usando uma expressão regular para permitir buscas parciais e case-insensitive
   const query = {
     query: `{
-        pokemon_v2_pokemon(where: {name: {_iregex: "${name}"}}) {
+        pokemon_v2_pokemon(where: {name: {_eq: "${name}"}}) {
             id,
             name
             pokemon_v2_pokemontypes {
@@ -42,7 +42,7 @@ export const findPokemonFullData = async (name) => {
   );
   const raw = response.data.data.pokemon_v2_pokemon[0];
   if (!raw) {
-    return null; // Retorna null se nenhum Pokémon for encontrado com o nome fornecido
+    throw new Error("Pokémon não encontrado"); // Retorna null se nenhum Pokémon for encontrado com o nome fornecido
   }
   // Retorna a lista de Pokémon encontrados, ou um array vazio se nenhum for encontrado
   return {
