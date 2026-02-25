@@ -54,10 +54,22 @@ export const PokemonNextBar = ({ id }) => {
           {loadingPrev ? <Skeleton width={60} /> : `← ${formatName(prevPokemon?.name)}`}
         </Button>
       ) : (
-        <div />
+        <Button
+          variant="contained"
+          disabled={true}
+        >Início</Button>
       )}
 
-      {id < 1025 && (
+      <Button
+          variant="contained"
+          onClick={() =>
+            navigate({
+              to: `/pokemonSearch`
+            })
+          }
+        >Buscar Pokémon</Button>
+
+      {id < 1025 ? (
         <Button
           variant="contained"
           disabled={loadingNext}
@@ -70,7 +82,12 @@ export const PokemonNextBar = ({ id }) => {
         >
           {loadingNext ? <Skeleton width={60} /> : `${formatName(nextPokemon?.name)} →`}
         </Button>
-      )}
+      ):
+        <Button
+          variant="contained"
+          disabled={true}
+        >Fim</Button>
+      }
     </Stack>
   );
 };
