@@ -15,24 +15,36 @@ export const findPokemonFullData = async (name) => {
   // Monta a query GraphQL para buscar Pokémon cujo nome corresponda ao termo de pesquisa, usando uma expressão regular para permitir buscas parciais e case-insensitive
   const query = {
     query: `{
-        pokemon_v2_pokemon(where: {name: {_eq: "${name}"}}) {
-            id,
-            name
-            pokemon_v2_pokemontypes {
-                type: pokemon_v2_type {
-                    name
-                }
-            }
-            pokemon_v2_pokemonstats {
-                base_stat
-                stat: pokemon_v2_stat {
-                    name
-                }
-            }
-            pokemon_v2_pokemoncries {
-                cries
-            }
+      pokemon_v2_pokemon(where: {name: {_eq: "${name}"}}) {
+        id,
+        name
+
+        pokemon_v2_pokemontypes {
+          type: pokemon_v2_type {
+              name
+          }
         }
+
+        pokemon_v2_pokemonstats {
+          base_stat
+          stat: pokemon_v2_stat {
+            name
+          }
+        }
+
+        pokemon_v2_pokemoncries {
+          cries
+        }
+      }
+      pokemon_v2_pokemonspecies(where: {name: {_eq: "${name}"}}) {
+        pokemon_v2_pokemonspeciesflavortexts(
+          where: {language_id: {_eq: 9}} # Filtra para obter apenas as descrições em inglês e mais recentes
+          order_by: {version_id: desc}
+          limit: 1
+        ) {
+          flavor_text
+        }
+      }
     }`,
   };
   // Faz a requisição POST para a API GraphQL do PokeAPI com a query montada e aguarda a resposta
@@ -41,23 +53,26 @@ export const findPokemonFullData = async (name) => {
     query,
   );
   const raw = response.data.data.pokemon_v2_pokemon[0];
+  const species = response.data.data.pokemon_v2_pokemonspecies[0];
+  
   if (!raw) {
-    throw new Error("Pokémon não encontrado"); // Retorna null se nenhum Pokémon for encontrado com o nome fornecido
+    throw new Error("Pokémon not found"); // Retorna null se nenhum Pokémon for encontrado com o nome fornecido
   }
   // Retorna a lista de Pokémon encontrados, ou um array vazio se nenhum for encontrado
   return {
     id: raw.id,
     name: raw.name,
     types: raw.pokemon_v2_pokemontypes.map((item) => ({
-      type: {name: item.type.name},
+      type: { name: item.type.name },
     })),
     stats: raw.pokemon_v2_pokemonstats.map((item) => ({
-      stat: {name: item.stat.name},
+      stat: { name: item.stat.name },
       base_stat: item.base_stat,
     })),
     cries: {
       latest: raw.pokemon_v2_pokemoncries[0]?.cries?.latest || null,
     },
+    description: species?.pokemon_v2_pokemonspeciesflavortexts[0]?.flavor_text || "No description available",
   };
 };
 

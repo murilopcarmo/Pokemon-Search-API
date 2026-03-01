@@ -57,7 +57,7 @@ export const PokemonNextBar = ({ id }) => {
         <Button
           variant="contained"
           disabled={true}
-        >Início</Button>
+        >Start</Button>
       )}
 
       <Button
@@ -67,7 +67,7 @@ export const PokemonNextBar = ({ id }) => {
               to: `/pokemonSearch`
             })
           }
-        >Buscar Pokémon</Button>
+        >Search Pokémon</Button>
 
       {id < 1025 ? (
         <Button
@@ -86,7 +86,7 @@ export const PokemonNextBar = ({ id }) => {
         <Button
           variant="contained"
           disabled={true}
-        >Fim</Button>
+        >End</Button>
       }
     </Stack>
   );

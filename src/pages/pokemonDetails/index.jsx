@@ -32,7 +32,7 @@ export const PokemonDetails = () => {
           height: "100vh",
         }}
       >
-        <Typography>Buscando dados de "{name}"...</Typography>
+        <Typography>Searching data of "{name}"...</Typography>
       </Container>
     );
   if (isError) {
@@ -47,7 +47,7 @@ export const PokemonDetails = () => {
         }}
       >
         <Typography>
-          {error?.message || "Erro ao buscar dados do Pokémon"}
+          {error?.message || "An error occurred while fetching the Pokémon data."}
         </Typography>
       </Container>
     );
@@ -66,13 +66,17 @@ export const PokemonDetails = () => {
       <Paper id="pokemon-details">
         {/*Container de dados*/}
         <Box className="pokemon-info">
-          <PokemonNextBar id={pokemon.id} />
-          {/*nome*/}
-          <Typography variant="h5">{formatName(pokemon.name)}</Typography>
-          <br />
-          {/*Sprite*/}
-          <PokemonImg id={pokemon.id} alt={formatName(pokemon.name)} />
-          <br />
+          <Box className="pokemon-text">
+            <PokemonNextBar id={pokemon.id} />
+            {/*nome*/}
+            <Typography variant="h5">{formatName(pokemon.name)}</Typography>
+            <br />
+            {/*Sprite*/}
+            <PokemonImg id={pokemon.id} alt={formatName(pokemon.name)} />
+            <br />
+            {/*Descrição*/}
+            <Typography variant="body1">{pokemon.description}</Typography>
+          </Box>
           {/*Tipos*/}
           <TypeContainer>
             {pokemon.types.map((item, index) => (

@@ -26,6 +26,21 @@ export const PokemonGrid = () => {
     enabled: debouncedSearch.length >= 2, // Somente executa a busca se houver um termo de pesquisa com mais de 2 caracteres
     placeholderData: (prevData) => prevData, // Mantém os dados anteriores enquanto a nova busca é carregada
   });
+  const [favorites, setFavorites] = useState(()=>{
+    const storedFavorites = localStorage.getItem("favorites");
+    return storedFavorites ? JSON.parse(storedFavorites) : [];
+  }); // Estado para controlar a lista de Pokémon favoritos, iniciando como um array vazio
+
+  const toggleFavorite = (name) => {// Função para adicionar ou remover um Pokémon da lista de favoritos. Verifica se o Pokémon já está na lista de favoritos e, dependendo disso, atualiza a lista e o localStorage.
+    let updatedFavorites;
+    if (favorites.includes(name)) {
+      updatedFavorites = favorites.filter((fav) => fav !== name); // Remove o Pokémon dos favoritos se já estiver na lista
+    } else {
+      updatedFavorites = [...favorites, name]; // Adiciona o Pokémon aos favoritos se não estiver na lista
+    }
+    setFavorites(updatedFavorites);
+    localStorage.setItem("favorites", JSON.stringify(updatedFavorites)); // Atualiza o localStorage com a nova lista de favoritos
+  };
 
   // Variável para determinar se deve mostrar os skeletons de carregamento
   const showSkeleton = (isLoading || isFetching) && pokemons.length === 0;
@@ -41,7 +56,7 @@ export const PokemonGrid = () => {
     if (isError) {
       return (
         <Typography variant="h6" color="error" sx={{ m: 2 }}>
-          Erro ao carregar a lista de Pokémon: {error.message}
+          Error : {error.message}
         </Typography>
       );
     }
@@ -72,14 +87,14 @@ export const PokemonGrid = () => {
               pokemon, // Exibe apenas os Pokémon até o limite definido
             ) => (
               <Grid size={{ xs: 12, md: 2 }} key={pokemon.id}>
-                <PokemonCard name={pokemon.name} id={pokemon.id} />
+                <PokemonCard name={pokemon.name} id={pokemon.id} isFavorite={favorites.includes(pokemon.name)} toggleFavorite={() => toggleFavorite(pokemon.name)} />
               </Grid>
             ),
           )}
           {limit < pokemons.length && ( // Carrega mais Pokémon apenas se houver mais para mostrar
             <Grid size={{ xs: 12 }} sx={{ textAlign: "center", mt: 2 }}>
               <Button variant="text" onClick={() => setLimit(limit + 30)}>
-                Carregar mais
+                Load More
               </Button>
             </Grid>
           )}
@@ -90,7 +105,7 @@ export const PokemonGrid = () => {
     if (debouncedSearch.length >= 2 && !isFetching) {
       return (
         <Typography variant="h6" sx={{ m: 2 }}>
-          Nenhum Pokémon encontrado para "{debouncedSearch}"
+          No Pokémon found for "{debouncedSearch}"
         </Typography>
       );
     }
@@ -102,7 +117,7 @@ export const PokemonGrid = () => {
   return (
     <Container>
       <Typography id="text" variant="h5" sx={{ m: 2 }}>
-        Qual Pokémon busca?
+        Which Pokémon are you looking for?
       </Typography>
       <TextField
         id="searchPokemon"

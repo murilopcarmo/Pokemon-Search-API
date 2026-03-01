@@ -1,11 +1,14 @@
-import { CardActionArea } from "@mui/material";
+import { CardActionArea, Icon } from "@mui/material";
 import { useNavigate } from "@tanstack/react-router";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
+import IconButton from "@mui/material/IconButton";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { PokemonCardContainer, PokemonSprite } from "./styles";
 
 
-export const PokemonCard = ({ name, id }) => {
+export const PokemonCard = ({ name, id, isFavorite, toggleFavorite }) => {
   const formatName = (name) => {
     if (!name) return "";
 
@@ -21,8 +24,12 @@ export const PokemonCard = ({ name, id }) => {
         params: { name }, // Passa o nome do Pokémon como parâmetro para a rota de detalhes
       });
     }
+
   return (
     <PokemonCardContainer>
+      <IconButton aria-label="add to favorites" sx={{ width: 32, height: 32 }} onClick={toggleFavorite}>
+        {isFavorite ? <FavoriteIcon sx={{ color: "red" }} /> : <FavoriteBorderIcon />}
+      </IconButton>
       <CardActionArea onClick={() => handleCardClick()}>
         <PokemonSprite
           component="img"
