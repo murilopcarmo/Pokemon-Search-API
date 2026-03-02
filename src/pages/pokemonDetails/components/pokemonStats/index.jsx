@@ -1,4 +1,4 @@
-import { StatsTable, Td } from "./styles";
+import { StatsTable, Td, Th, StatBar} from "./styles";
 
 export const PokemonStats = ({ stats }) => {
   return (
@@ -12,8 +12,8 @@ export const PokemonStats = ({ stats }) => {
         {Array.isArray(stats) &&
           stats.map((item, index) => (
             <tr key={index}>
-              <Td>{item.stat.name.toUpperCase()}</Td>
-              <Td>{item.base_stat}</Td>
+              <Th><div>{item.stat.name.toUpperCase().replace(/^SP(?!(EED))\w+/, "SP.").replace(/-/g, " ")}:</div><div>{item.base_stat}</div></Th>
+              <Td><StatBar width={item.base_stat} color={item.stat.name} /></Td>
             </tr>
           ))}
       </tbody>

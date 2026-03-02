@@ -51,7 +51,7 @@ export const PokemonNextBar = ({ id }) => {
             })
           }
         >
-          {loadingPrev ? <Skeleton width={60} /> : `← ${formatName(prevPokemon?.name)}`}
+          {loadingPrev ? <Skeleton width={60} /> : `← ${formatName(prevPokemon?.name)} #${prevPokemon?.id}`}
         </Button>
       ) : (
         <Button
@@ -80,7 +80,7 @@ export const PokemonNextBar = ({ id }) => {
             })
           }
         >
-          {loadingNext ? <Skeleton width={60} /> : `${formatName(nextPokemon?.name)} →`}
+          {loadingNext ? <Skeleton width={60} /> : `${formatName(nextPokemon?.name)} #${nextPokemon?.id} →`}
         </Button>
       ):
         <Button

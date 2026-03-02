@@ -12,8 +12,10 @@ export const PokemonImg = ({ id, alt }) => {
 
     return (
             <Box>
-            <Paper elevation={3} sx={{ display: "flex", flexDirection: "column", alignItems: "center", padding: 2, width: "fit-content" }}>
-            <Tabs  onChange={onTabChange} value={tabValue}>
+            <Paper elevation={3} sx={{ display: "flex", flexDirection: "column", alignItems: "center",
+                 padding: 2, width: "fit-content" }}>
+            <Tabs  onChange={onTabChange} value={tabValue} aria-label="pokemon image tabs"
+             sx={{ marginBottom: 2 }}>
                 <Tab label="Sprite" />
                 <Tab label="Artwork" />
             </Tabs>

@@ -47,7 +47,8 @@ export const PokemonDetails = () => {
         }}
       >
         <Typography>
-          {error?.message || "An error occurred while fetching the Pokémon data."}
+          {error?.message ||
+            "An error occurred while fetching the Pokémon data."}
         </Typography>
       </Container>
     );
@@ -63,19 +64,21 @@ export const PokemonDetails = () => {
 
   return (
     <Container id="pokemon-details-container">
-      <Paper id="pokemon-details">
+      <Paper id="pokemon-details" sx={{padding: 1}}>
         {/*Container de dados*/}
-        <Box className="pokemon-info">
-          <Box className="pokemon-text">
-            <PokemonNextBar id={pokemon.id} />
-            {/*nome*/}
-            <Typography variant="h5">{formatName(pokemon.name)}</Typography>
-            <br />
-            {/*Sprite*/}
-            <PokemonImg id={pokemon.id} alt={formatName(pokemon.name)} />
+        <PokemonNextBar id={pokemon.id} />
+        <Box className="pokemon-info" sx={{paddingTop: 2}}>
+          <Box className="pokemon-text" sx={{display: "flex", width: "100%", justifyContent: "space-between"}}>
+            <Box sx={{marginRight: "20px", alignItems: "center", display: "flex", flexDirection: "column"}}>
+            {/*Nome*/}
+            <Typography variant="h5">{formatName(pokemon.name)} #{pokemon.id}</Typography>
             <br />
             {/*Descrição*/}
             <Typography variant="body1">{pokemon.description}</Typography>
+            <br />
+            </Box>
+            {/*Sprite*/}
+            <PokemonImg id={pokemon.id} alt={formatName(pokemon.name)} />
           </Box>
           {/*Tipos*/}
           <TypeContainer>
