@@ -15,7 +15,7 @@ export const findPokemonFullData = async (name) => {
   // Monta a query GraphQL para buscar Pokémon cujo nome corresponda ao termo de pesquisa, usando uma expressão regular para permitir buscas parciais e case-insensitive
   const query = {
     query: `{
-      pokemon_v2_pokemon(where: {name: {_eq: "${name}"}}) {
+      main: pokemon_v2_pokemon(where: {name: {_eq: "${name}"}}) {
         id,
         name
 
@@ -36,7 +36,7 @@ export const findPokemonFullData = async (name) => {
           cries
         }
       }
-      pokemon_v2_pokemonspecies(where: {name: {_eq: "${name}"}}) {
+      species: pokemon_v2_pokemonspecies(where: {name: {_eq: "${name}"}}) {
         pokemon_v2_pokemonspeciesflavortexts(
           where: {language_id: {_eq: 9}} # Filtra para obter apenas as descrições em inglês e mais recentes
           order_by: {version_id: desc}
@@ -52,8 +52,10 @@ export const findPokemonFullData = async (name) => {
     "https://beta.pokeapi.co/graphql/v1beta",
     query,
   );
-  const raw = response.data.data.pokemon_v2_pokemon[0];
-  const species = response.data.data.pokemon_v2_pokemonspecies[0];
+  const {
+    main: [raw],
+    species: [species],
+  }= response.data.data;
   
   if (!raw) {
     throw new Error("Pokémon not found"); // Retorna null se nenhum Pokémon for encontrado com o nome fornecido
@@ -98,4 +100,34 @@ export const findPokemonByName = async (name) => {
   );
   // Retorna a lista de Pokémon encontrados, ou um array vazio se nenhum for encontrado
   return response.data.data.pokemon_v2_pokemon;
+};
+
+// Função para buscar os Pokémon anterior e próximo com base no ID do Pokémon atual, usando GraphQL
+export const findNavigation = async (id) => {
+  if (!id || id.toString().trim() === "") {
+    return [];
+  }
+
+  const query = {
+    query: `{
+      prev: pokemon_v2_pokemon(where: {id: {_eq: ${id - 1}}}) {
+        id,
+        name
+      }
+      next: pokemon_v2_pokemon(where: {id: {_eq: ${id + 1}}}) {
+        id,
+        name
+      }
+    }`,
+  };
+
+  const response = await axios.post(
+    "https://beta.pokeapi.co/graphql/v1beta",
+    query,
+  );
+  const { prev, next } = response.data.data;
+  return {
+    prev: prev[0] || null,
+    next: next[0] || null,
+  };
 };

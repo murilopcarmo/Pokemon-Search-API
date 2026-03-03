@@ -11,6 +11,7 @@ import { useQuery } from "@tanstack/react-query";
 
 export const PokemonDetails = () => {
   const { name } = useParams({ from: "/_layout/pokemonDetails/$name" }); // Obtém o nome do Pokémon a partir dos parâmetros da rota
+  
   const {
     data: pokemon,
     isLoading,
@@ -22,6 +23,7 @@ export const PokemonDetails = () => {
     retry: false, // Desativa tentativas automáticas de refetch em caso de erro
     refetchOnWindowFocus: false, // Desativa refetch ao focar a janela
   });
+
   if (isLoading)
     return (
       <Container
@@ -35,6 +37,7 @@ export const PokemonDetails = () => {
         <Typography>Searching data of "{name}"...</Typography>
       </Container>
     );
+
   if (isError) {
     return (
       <Container
@@ -63,10 +66,12 @@ export const PokemonDetails = () => {
   };
 
   return (
-    <Container id="pokemon-details-container">
+    <Container id="pokemon-details-container">{/* Container principal para os detalhes do Pokémon */}
+      {/* Paper para estilizar o conteúdo dos detalhes do Pokémon */}
       <Paper id="pokemon-details" sx={{padding: 1}}>
-        {/*Container de dados*/}
+        {/*Barra de navegação para o próximo Pokémon*/}
         <PokemonNextBar id={pokemon.id} />
+
         <Box className="pokemon-info" sx={{paddingTop: 2}}>
           <Box className="pokemon-text" sx={{display: "flex", width: "100%", justifyContent: "space-between"}}>
             <Box sx={{marginRight: "20px", alignItems: "center", display: "flex", flexDirection: "column"}}>
@@ -77,15 +82,18 @@ export const PokemonDetails = () => {
             <Typography variant="body1">{pokemon.description}</Typography>
             <br />
             </Box>
-            {/*Sprite*/}
-            <PokemonImg id={pokemon.id} alt={formatName(pokemon.name)} />
-          </Box>
-          {/*Tipos*/}
+            <Box sx={{display: "flex", flexDirection: "row", alignItems: "center"}}>
+            {/*Tipos*/}
           <TypeContainer>
             {pokemon.types.map((item, index) => (
               <PokemonType key={index} types={item.type.name} />
             ))}
           </TypeContainer>
+            {/*Sprite*/}
+            <PokemonImg id={pokemon.id} alt={formatName(pokemon.name)} />
+            </Box>
+          </Box>
+          
           {/* Som do Pokemon */}
           <br />
           <PokemonCry src={pokemon.cries.latest} />

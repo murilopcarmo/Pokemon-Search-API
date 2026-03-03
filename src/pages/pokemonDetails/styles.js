@@ -7,6 +7,7 @@ export const TypeContainer = styled.div`
   align-items: flex-start;
   justify-content: center;
   gap: 10px;
+  padding: 10px;
 `;
 
 export const SearchButton = styled(Button)`
