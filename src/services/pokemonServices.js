@@ -35,6 +35,15 @@ export const findPokemonFullData = async (name) => {
         pokemon_v2_pokemoncries {
           cries
         }
+        height
+        weight
+        pokemon_v2_pokemonspecy {
+          pokemon_v2_evolutionchain {
+            pokemon_v2_pokemonspecies(order_by: {order: asc}) {
+            name
+            }
+          }
+        }
       }
       species: pokemon_v2_pokemonspecies(where: {name: {_eq: "${name}"}}) {
         pokemon_v2_pokemonspeciesflavortexts(
@@ -43,6 +52,9 @@ export const findPokemonFullData = async (name) => {
           limit: 1
         ) {
           flavor_text
+        }
+        pokemon_v2_pokemonspeciesnames(where: {language_id: {_eq: 9}}) {
+          genus
         }
       }
     }`,
@@ -74,7 +86,13 @@ export const findPokemonFullData = async (name) => {
     cries: {
       latest: raw.pokemon_v2_pokemoncries[0]?.cries?.latest || null,
     },
+    height: raw.height,
+    weight: raw.weight,
+    evolutionChain: raw.pokemon_v2_pokemonspecy?.pokemon_v2_evolutionchain?.pokemon_v2_pokemonspecies.map((item) => ({
+      name: item.name,
+    })) || [],
     description: species?.pokemon_v2_pokemonspeciesflavortexts[0]?.flavor_text || "No description available",
+    species: species?.pokemon_v2_pokemonspeciesnames[0]?.genus || "Unknown",
   };
 };
 

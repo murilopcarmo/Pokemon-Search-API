@@ -4,6 +4,8 @@ import { PokemonNextBar } from "./components/pokemonNextBar";
 import { PokemonImg } from "./components/pokemonImg";
 import { PokemonStats } from "./components/pokemonStats";
 import { PokemonCry } from "./components/pokemonCry";
+import { EvolutionChain } from "./components/pokemonEvoChain";
+import { formatName } from "./hooks";
 import { TypeContainer } from "./styles";
 import { Typography, Container, Paper, Box } from "@mui/material";
 import { findPokemonFullData } from "../../services/pokemonServices";
@@ -57,14 +59,6 @@ export const PokemonDetails = () => {
     );
   }
 
-  const formatName = (name) => {
-    if (!name) return "";
-
-    return name
-      .replace(/-/g, " ") // Substitui todos os hífens por espaço
-      .replace(/\b\w/g, (char) => char.toUpperCase()); // Primeira letra de cada palavra em maiúscula
-  };
-
   return (
     <Container id="pokemon-details-container">{/* Container principal para os detalhes do Pokémon */}
       {/* Paper para estilizar o conteúdo dos detalhes do Pokémon */}
@@ -80,6 +74,11 @@ export const PokemonDetails = () => {
             <br />
             {/*Descrição*/}
             <Typography variant="body1">{pokemon.description}</Typography>
+            <Typography variant="body2">Height: {pokemon.height / 10} m | Weight: {pokemon.weight / 10} kg</Typography>
+            <Typography variant="body2">Species: {pokemon.species}</Typography>
+            <br />
+            {/*Evolução*/}
+            <EvolutionChain evolutionChain={pokemon.evolutionChain} name={pokemon.name} />
             <br />
             </Box>
             <Box sx={{display: "flex", flexDirection: "row", alignItems: "center"}}>

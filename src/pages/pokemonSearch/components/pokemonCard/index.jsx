@@ -16,8 +16,11 @@ export const PokemonCard = ({ name, id, isFavorite, toggleFavorite }) => {
       .replace(/-/g, " ") // Substitui todos os hífens por espaço
       .replace(/\b\w/g, (char) => char.toUpperCase()); // Primeira letra de cada palavra em maiúscula
   };
+  
   const fontSize = name.length > 10 ? "0.9rem" : "1.2rem"; // Ajusta o tamanho da fonte com base no comprimento do nome do Pokémon para garantir que ele se encaixe bem no card
+  
   const navigate = useNavigate();
+  
   const handleCardClick = () => {
     navigate ({
         to: '/pokemonDetails/$name',
