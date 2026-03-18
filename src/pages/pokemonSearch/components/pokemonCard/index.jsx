@@ -1,4 +1,4 @@
-import { CardActionArea, Icon } from "@mui/material";
+import { CardActionArea } from "@mui/material";
 import { useNavigate } from "@tanstack/react-router";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";

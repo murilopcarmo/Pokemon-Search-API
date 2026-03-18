@@ -6,6 +6,7 @@ import Typography from '@mui/material/Typography';
 import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
 import TemporaryDrawer from '../appDrawer';
+import { useNavigate } from '@tanstack/react-router';
 
 
 const Search = styled('div')(({ theme }) => ({
@@ -50,7 +51,22 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
+const handleKeyDown = (event, navigate) => {
+  if (event.key === 'Enter') {
+    const query = event.target.value.trim();
+    if (query) {
+      navigate({
+        to: '/pokemonDetails/$name',
+        params: { name: query.toLowerCase() }, // Passa o nome do Pokémon como parâmetro para a rota de detalhes, convertendo para minúsculas
+      });
+    }
+    event.target.value = ''; // Limpa o campo de busca após a navegação
+  }
+};
+
+
 export default function AppBar() {
+  const navigate = useNavigate();
   return (
     <Box sx={{ flexGrow: 1 }}>
       <MuiAppBar  position="fixed">
@@ -64,12 +80,13 @@ export default function AppBar() {
           >
             PokéPedia
           </Typography>
-          <Search>
+          <Search >
             <SearchIconWrapper>
               <SearchIcon />
             </SearchIconWrapper>
             <StyledInputBase
               placeholder="Quick search Pokémon…"
+              onKeyDown={(event) => handleKeyDown(event, navigate)}
               inputProps={{ 'aria-label': 'search' }}
             />
           </Search>

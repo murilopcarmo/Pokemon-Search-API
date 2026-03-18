@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useDebounce } from "./hooks";
-import { Container, Grid, Button } from "@mui/material";
+import { Container, Grid, Button, Box } from "@mui/material";
 import Skeleton from "@mui/material/Skeleton";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
@@ -26,12 +26,13 @@ export const PokemonGrid = () => {
     enabled: debouncedSearch.length >= 2, // Somente executa a busca se houver um termo de pesquisa com mais de 2 caracteres
     placeholderData: (prevData) => prevData, // Mantém os dados anteriores enquanto a nova busca é carregada
   });
-  const [favorites, setFavorites] = useState(()=>{
+  const [favorites, setFavorites] = useState(() => {
     const storedFavorites = localStorage.getItem("favorites");
     return storedFavorites ? JSON.parse(storedFavorites) : [];
   }); // Estado para controlar a lista de Pokémon favoritos, iniciando como um array vazio
 
-  const toggleFavorite = (name) => {// Função para adicionar ou remover um Pokémon da lista de favoritos. Verifica se o Pokémon já está na lista de favoritos e, dependendo disso, atualiza a lista e o localStorage.
+  const toggleFavorite = (name) => {
+    // Função para adicionar ou remover um Pokémon da lista de favoritos. Verifica se o Pokémon já está na lista de favoritos e, dependendo disso, atualiza a lista e o localStorage.
     let updatedFavorites;
     if (favorites.includes(name)) {
       updatedFavorites = favorites.filter((fav) => fav !== name); // Remove o Pokémon dos favoritos se já estiver na lista
@@ -87,7 +88,12 @@ export const PokemonGrid = () => {
               pokemon, // Exibe apenas os Pokémon até o limite definido
             ) => (
               <Grid size={{ xs: 12, md: 2 }} key={pokemon.id}>
-                <PokemonCard name={pokemon.name} id={pokemon.id} isFavorite={favorites.includes(pokemon.name)} toggleFavorite={() => toggleFavorite(pokemon.name)} />
+                <PokemonCard
+                  name={pokemon.name}
+                  id={pokemon.id}
+                  isFavorite={favorites.includes(pokemon.name)}
+                  toggleFavorite={() => toggleFavorite(pokemon.name)}
+                />
               </Grid>
             ),
           )}
@@ -116,18 +122,20 @@ export const PokemonGrid = () => {
   // Render do grid de Pokémon, incluindo a barra de pesquisa e o conteúdo dinâmico baseado no estado da busca e dos dados
   return (
     <Container>
-      <Typography id="text" variant="h5" sx={{ m: 2 }}>
-        Which Pokémon are you looking for?
-      </Typography>
-      <TextField
-        id="searchPokemon"
-        size="small"
-        variant="outlined"
-        value={input}
-        onChange={handleChange}
-        required
-      />
-      <div id="bottom-box"></div>
+      <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", mt: 4 }}>
+        <Typography id="text" variant="h5" sx={{ m: 2 }}>
+          Which Pokémon are you looking for?
+        </Typography>
+        <TextField
+          sx={{ pb: 1 }}
+          id="searchPokemon"
+          size="small"
+          variant="outlined"
+          value={input}
+          onChange={handleChange}
+          required
+        />
+      </Box>
       <Grid container spacing={2}>
         {renderContent()}
       </Grid>
