@@ -13,6 +13,7 @@ import { createFileRoute } from '@tanstack/react-router'
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as LayoutRouteImport } from './routes/_layout'
 import { Route as LayoutPokemonDetailsNameRouteImport } from './routes/_layout/pokemonDetails/$name'
+import { Route as LayoutItemDetailsNameRouteImport } from './routes/_layout/itemDetails/$name'
 
 const LayoutPokemonSearchIndexLazyRouteImport = createFileRoute(
   '/_layout/pokemonSearch/',
@@ -52,14 +53,21 @@ const LayoutPokemonDetailsNameRoute =
     path: '/pokemonDetails/$name',
     getParentRoute: () => LayoutRoute,
   } as any)
+const LayoutItemDetailsNameRoute = LayoutItemDetailsNameRouteImport.update({
+  id: '/itemDetails/$name',
+  path: '/itemDetails/$name',
+  getParentRoute: () => LayoutRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof LayoutHomeIndexLazyRoute
+  '/itemDetails/$name': typeof LayoutItemDetailsNameRoute
   '/pokemonDetails/$name': typeof LayoutPokemonDetailsNameRoute
   '/about/': typeof LayoutAboutIndexLazyRoute
   '/pokemonSearch/': typeof LayoutPokemonSearchIndexLazyRoute
 }
 export interface FileRoutesByTo {
+  '/itemDetails/$name': typeof LayoutItemDetailsNameRoute
   '/pokemonDetails/$name': typeof LayoutPokemonDetailsNameRoute
   '/': typeof LayoutHomeIndexLazyRoute
   '/about': typeof LayoutAboutIndexLazyRoute
@@ -68,6 +76,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_layout': typeof LayoutRouteWithChildren
+  '/_layout/itemDetails/$name': typeof LayoutItemDetailsNameRoute
   '/_layout/pokemonDetails/$name': typeof LayoutPokemonDetailsNameRoute
   '/_layout/_home/': typeof LayoutHomeIndexLazyRoute
   '/_layout/about/': typeof LayoutAboutIndexLazyRoute
@@ -75,12 +84,23 @@ export interface FileRoutesById {
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/pokemonDetails/$name' | '/about/' | '/pokemonSearch/'
+  fullPaths:
+    | '/'
+    | '/itemDetails/$name'
+    | '/pokemonDetails/$name'
+    | '/about/'
+    | '/pokemonSearch/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/pokemonDetails/$name' | '/' | '/about' | '/pokemonSearch'
+  to:
+    | '/itemDetails/$name'
+    | '/pokemonDetails/$name'
+    | '/'
+    | '/about'
+    | '/pokemonSearch'
   id:
     | '__root__'
     | '/_layout'
+    | '/_layout/itemDetails/$name'
     | '/_layout/pokemonDetails/$name'
     | '/_layout/_home/'
     | '/_layout/about/'
@@ -128,10 +148,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutPokemonDetailsNameRouteImport
       parentRoute: typeof LayoutRoute
     }
+    '/_layout/itemDetails/$name': {
+      id: '/_layout/itemDetails/$name'
+      path: '/itemDetails/$name'
+      fullPath: '/itemDetails/$name'
+      preLoaderRoute: typeof LayoutItemDetailsNameRouteImport
+      parentRoute: typeof LayoutRoute
+    }
   }
 }
 
 interface LayoutRouteChildren {
+  LayoutItemDetailsNameRoute: typeof LayoutItemDetailsNameRoute
   LayoutPokemonDetailsNameRoute: typeof LayoutPokemonDetailsNameRoute
   LayoutHomeIndexLazyRoute: typeof LayoutHomeIndexLazyRoute
   LayoutAboutIndexLazyRoute: typeof LayoutAboutIndexLazyRoute
@@ -139,6 +167,7 @@ interface LayoutRouteChildren {
 }
 
 const LayoutRouteChildren: LayoutRouteChildren = {
+  LayoutItemDetailsNameRoute: LayoutItemDetailsNameRoute,
   LayoutPokemonDetailsNameRoute: LayoutPokemonDetailsNameRoute,
   LayoutHomeIndexLazyRoute: LayoutHomeIndexLazyRoute,
   LayoutAboutIndexLazyRoute: LayoutAboutIndexLazyRoute,

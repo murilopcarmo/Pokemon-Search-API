@@ -6,8 +6,14 @@ import { PokemonStats } from "./components/pokemonStats";
 import { PokemonCry } from "./components/pokemonCry";
 import { EvolutionChain } from "./components/pokemonEvoChain";
 import { formatName } from "./hooks";
-import { TypeContainer } from "./styles";
-import { Typography, Container, Paper, Box, Button } from "@mui/material";
+import {
+  Typography,
+  Container,
+  Paper,
+  Box,
+  Button,
+  Stack,
+} from "@mui/material";
 import { findPokemonFullData } from "../../services/pokemonServices";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
@@ -90,68 +96,102 @@ export const PokemonDetails = () => {
 
         <Box className="pokemon-info" sx={{ paddingTop: 2 }}>
           <Box
-            className="pokemon-text"
+            sx={{
+              marginRight: "20px",
+              alignItems: "center",
+              display: "flex",
+              flexDirection: "column",
+              width: "100%",
+            }}
+          >
+            {/*Nome*/}
+            <Typography variant="h5">
+              {formatName(pokemon.name)} #{pokemon.id}
+            </Typography>
+          </Box>
+          <Box
+            className="pokemon-data"
             sx={{
               display: "flex",
               width: "100%",
               justifyContent: "space-between",
             }}
           >
+            {/*Tabela de stats*/}
+            <Box>
+              <PokemonStats stats={pokemon.stats} />
+            </Box>
+
             <Box
               sx={{
-                marginRight: "20px",
-                alignItems: "center",
                 display: "flex",
                 flexDirection: "column",
-                width: "100%",
-              }}
-            >
-              {/*Nome*/}
-              <Typography variant="h5">
-                {formatName(pokemon.name)} #{pokemon.id}
-              </Typography>
-              <br />
-              {/*Descrição*/}
-              <Typography variant="body1">{pokemon.description}</Typography>
-              <Typography variant="body2">
-                Height: {pokemon.height / 10} m | Weight: {pokemon.weight / 10}{" "}
-                kg
-              </Typography>
-              <Typography variant="body2">
-                Species: {pokemon.species}
-              </Typography>
-              <br />
-              {/*Evolução*/}
-              <EvolutionChain
-                evolutionChain={pokemon.evolutionTree}
-                name={pokemon.name}
-              />
-              <br />
-            </Box>
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "row",
                 alignItems: "center",
               }}
             >
-              {/*Tipos*/}
-              <TypeContainer>
-                {pokemon.types.map((item, index) => (
-                  <PokemonType key={index} types={item.type.name} />
-                ))}
-              </TypeContainer>
               {/*Sprite*/}
               <PokemonImg id={pokemon.id} alt={formatName(pokemon.name)} />
+              {/*Tipos*/}
+              <Box
+                component="fieldset"
+                sx={{
+                  border: "1px solid",
+                  borderColor: "divider",
+                  borderRadius: 1,
+                  p: 2,
+                  width: "200px", // Tamanho fixo que você solicitou
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center", // Centraliza o conteúdo horizontalmente
+                }}
+              >
+                <Typography
+                  component="legend"
+                  variant="caption"
+                  sx={{
+                    px: 1, // Espaçamento nas laterais do texto
+                    color: "text.secondary",
+                    fontWeight: "bold",
+                    textTransform: "uppercase",
+                  }}
+                >
+                  Types
+                </Typography>
+                <Stack direction="row" spacing={1}>
+                  {pokemon.types.map((item, index) => (
+                    <PokemonType key={index} types={item.type.name} />
+                  ))}
+                </Stack>
+              </Box>
+              {/* Som do Pokemon */}
+              <br />
+              <PokemonCry src={pokemon.cries.latest} />
             </Box>
           </Box>
-
-          {/* Som do Pokemon */}
+        </Box>
+        <Box
+          sx={{
+            marginRight: "20px",
+            alignItems: "center",
+            display: "flex",
+            flexDirection: "column",
+            width: "100%",
+          }}
+        >
           <br />
-          <PokemonCry src={pokemon.cries.latest} />
-
-          {/*Tabela de stats*/}
-          <PokemonStats stats={pokemon.stats} />
+          {/*Descrição*/}
+          <Typography variant="body1">{pokemon.description}</Typography>
+          <Typography variant="body2">
+            Height: {pokemon.height / 10} m | Weight: {pokemon.weight / 10} kg
+          </Typography>
+          <Typography variant="body2">Species: {pokemon.species}</Typography>
+          <br />
+          {/*Evolução*/}
+          <EvolutionChain
+            evolutionChain={pokemon.evolutionTree}
+            name={pokemon.name}
+          />
+          <br />
         </Box>
       </Paper>
     </Container>
