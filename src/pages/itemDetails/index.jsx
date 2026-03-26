@@ -1,12 +1,19 @@
 import { useQuery } from "@tanstack/react-query";
 import { findItem } from "../../services/pokemonServices";
 import { useNavigate, useParams } from "@tanstack/react-router";
-import { Container } from "@mui/material";
+import { Container, Typography } from "@mui/material";
 import { formatName } from "../pokemonDetails/hooks";
 
 export const ItemDetails = () => {
     const { name } = useParams({ from: "/_layout/itemDetails/$name" }); // Obtém o nome do item a partir dos parâmetros da rota
-    
+    const navigate = useNavigate();
+    const handlePokemonClick = (name) => {
+    navigate({
+      to: "/pokemonDetails/$name",
+      params: { name }, // Passa o nome do Pokémon como parâmetro para a rota de detalhes
+    });
+  };
+  
     const {
       data: item,
         isLoading,
@@ -33,17 +40,20 @@ export const ItemDetails = () => {
             </Container>
         );
     }
-   
+
     return (
         <Container>
-            <h1>{formatName(item.name)}</h1>
-            <p>Cost: {item.cost}</p>
-            <p>Effect: {item.pokemon_v2_itemeffecttexts[0]?.short_effect}</p>
-            <p>Flavor Text: {item.pokemon_v2_itemflavortexts[0]?.flavor_text}</p>
-            <img src={item.pokemon_v2_itemsprites[0]?.sprites.default ? item.pokemon_v2_itemsprites[0]?.sprites.default : "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/unknown.png"} alt={item.name} />
-            {item.pokemon_v2_pokemonevolutions.length > 0 && (
-                item.pokemon_v2_pokemonevolutions.map((evolution, index) => (
-                    <p key={index}>Evolves into: {formatName(evolution.pokemon_v2_pokemonspecy.name)}</p>
+            <Typography variant="h4">{formatName(item.name)} <img src={item.sprite[0]?.sprites.default ? item.sprite[0]?.sprites.default : "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/unknown.png"} alt={item.name} /></Typography>
+            <Typography>Cost: {item.cost ? item.cost : "Cost not available on PokeAPI."}</Typography>
+            <Typography>Description: {item.description[0]?.flavor_text ? item.description[0]?.flavor_text : "Description not available on PokeAPI."}</Typography>
+            <Typography>Effect: {item.effect[0]?.short_effect ? item.effect[0]?.short_effect : "No effect available on PokeAPI."}</Typography>
+            
+            {item.evolutions.length > 0 && (
+                item.evolutions.map((evolution, index) => (
+                    <Typography key={index}>Evolves into:<a href="#" onClick={(e) => {
+                        e.preventDefault();
+                        handlePokemonClick(evolution.pokemon.name);
+                    }}>{formatName(evolution.pokemon.name)}</a></Typography>
                 ))
                 
             )}

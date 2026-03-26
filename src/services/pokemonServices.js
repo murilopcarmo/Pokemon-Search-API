@@ -259,21 +259,22 @@ export const findItem = async (name) => {
   // Monta a query GraphQL para buscar Pokémon cujo nome corresponda ao termo de pesquisa, usando uma expressão regular para permitir buscas parciais e case-insensitive
   const query = {
     query: `{
-      pokemon_v2_item(where: {name: {_eq: "${name}"}}) {
+      item: pokemon_v2_item(where: {name: {_eq: "${name}"}}) {
         name
         cost
-        pokemon_v2_itemeffecttexts {
+        effect: pokemon_v2_itemeffecttexts {
           short_effect
         }
-        pokemon_v2_itemflavortexts(limit: 1, order_by: {flavor_text: asc}) {
+        description: pokemon_v2_itemflavortexts(limit: 1, order_by: {flavor_text: asc}) {
           flavor_text
         }
-        pokemon_v2_itemsprites {
+        sprite: pokemon_v2_itemsprites {
           sprites
         }
-        pokemon_v2_pokemonevolutions {
-          pokemon_v2_pokemonspecy {
+        evolutions: pokemon_v2_pokemonevolutions {
+          pokemon: pokemon_v2_pokemonspecy {
             name
+            id
           }
         }
       }
@@ -285,5 +286,5 @@ export const findItem = async (name) => {
     query,
   );
   // Retorna a lista de Pokémon encontrados, ou um array vazio se nenhum for encontrado
-  return response.data.data.pokemon_v2_item[0];
+  return response.data.data.item[0];
 };
