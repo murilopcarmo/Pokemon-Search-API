@@ -1,4 +1,6 @@
 import axios from "axios";
+import { useQuery } from "@tanstack/react-query";
+import { use } from "react";
 
 export const findPokemonFullData = async (name) => {
   // Verifica se o nome é vazio ou apenas espaços em branco, e retorna um array vazio para evitar chamadas desnecessárias à API
@@ -287,4 +289,18 @@ export const findItem = async (name) => {
   );
   // Retorna a lista de Pokémon encontrados, ou um array vazio se nenhum for encontrado
   return response.data.data.item[0];
+};
+
+export const allPokemonNames = () => {
+  return useQuery({
+    queryKey: ["allPokemonNames"],
+    queryFn: async () => {
+      const response = await axios.get(
+        "https://pokeapi.co/api/v2/pokemon?limit=1025",
+      );
+      return response.data.results;
+    },
+    staleTime: Infinity, // Os dados não ficam obsoletos, evitando refetch desnecessário
+    cacheTime: Infinity, // Os dados permanecem no cache indefinidamente
+  });
 };
