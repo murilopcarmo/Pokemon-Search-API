@@ -7,30 +7,29 @@ export const Home = () => {
       <Paper elevation={3} sx={{ borderRadius: 5, overflow: "hidden", mb: 4 }}>
         <Box bgcolor="primary.light" width="100%" p={4} textAlign="center">
           <Typography variant="h4" component="h1">
-            Bem Vindo ao PokéPedia
+            Welcome to Poképedia!
           </Typography>
           <Typography variant="subtitle1" component="p" fontStyle={"italic"}>
-            Explore o mundo dos Pokémon e descubra informações incríveis!
+            Explore the world of Pokémon with us!
           </Typography>
         </Box>
         <Box>
           <Typography variant="body1" component="p" p={4}>
-            Poképedia é uma enciclopédia online dedicada a fornecer informações
-            detalhadas sobre o universo dos Pokémon. Aqui, você pode encontrar
-            dados sobre espécies, habilidades, evoluções, tipos e muito mais.
-            Seja você um treinador iniciante ou um fã de longa data.
+            Poképedia is an online encyclopedia dedicated to providing detailed
+            information about the Pokémon universe. Here, you can find data about
+            species, abilities, evolutions, types and much more.
+            Whether you are a beginner trainer or a long-time fan.
           </Typography>
           <Typography variant="body1" component="p" p={4}>
-            Você pode acessar o menu através do ícone de pokebola no canto
-            superior esquerdo para explorar as diferentes seções do site ou
-            através dos links rápidos abaixo:
+            You can access the menu through the pokeball icon in the top-left corner 
+            to explore different sections of the site or through the quick links below:
           </Typography>
           <Container
             sx={{ display: "flex", gap: 2, justifyContent: "center", mb: 4 }}
           >
             {[
-              {to: "/pokemonSearch", label: "Pesquisar Pokémon"},
-              {to: "/about", label: "Sobre o Projeto"},
+              {to: "/pokemonSearch", label: "Search Pokémon"},
+              {to: "/about", label: "About the Project"},
             ].map((link) => (
               <Link key={link.to} to={link.to} style={{ textDecoration: "none" }}>
                 <Paper elevation={3} sx={{padding: 1}}>

@@ -63,6 +63,33 @@ export const theme = createTheme({
     secondary: {
       main: "#a43024",
     },
+    // Cores para os status dos Pokémon
+    hpColor: { main: '#00b894' },
+    attackColor: { main: '#d63031' },
+    defenseColor: { main: '#0984e3' },
+    specialAttackColor: { main: '#e17055' },
+    specialDefenseColor: { main: '#6c5ce7' },
+    speedColor: { main: '#e84393' },
+    // Cores para os tipos dos Pokémon
+    normal: { main: "#A8A77A" },
+    fire: { main: "#EE8130" },
+    water: { main: "#6390F0" },
+    electric: { main: "#F7D02C" },
+    grass: { main: "#7AC74C" },
+    ice: { main: "#96D9D6" },
+    fighting: { main: "#C22E28" },
+    poison: { main: "#A33EA1" },
+    ground: { main: "#E2BF65" },
+    flying: { main: "#A98FF3" },
+    psychic: { main: "#F95587" },
+    bug: { main: "#A6B91A" },
+    rock: { main: "#B6A136" },
+    ghost: { main: "#735797" },
+    dragon: { main: "#6F35FC" },
+    dark: { main: "#705746" },
+    steel: { main: "#B7B7CE" },
+    fairy: { main: "#D685AD" },
+    
     divider: pokedexTheme.gray[200],
   },
   typography: {
