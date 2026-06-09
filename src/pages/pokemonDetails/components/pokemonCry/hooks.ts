@@ -1,4 +1,4 @@
-export const usePokemonCry = ({src}) => {
+export const usePokemonCry = ({src}: { src: string }) => {
   const play = () => {
     const pokemonCry = new Audio(src);
     pokemonCry.currentTime = 0;

@@ -4,7 +4,7 @@ import { Box } from "./styles";
 import PlayCircleIcon from '@mui/icons-material/PlayCircle';
 import IconButton from "@mui/material/IconButton";
 
-export const PokemonCry = ({ src }) => {
+export const PokemonCry = ({ src }: { src: string }) => {
   const {play} = usePokemonCry({src});
   return (
     <Box>
